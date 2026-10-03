@@ -3,131 +3,69 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0f766e">
-<title>Merchant Operations</title>
-<meta name="description" content="Mobile app for staff: daily tasks, merchant visits, inspections with checklists, photos and GPS evidence.">
+<meta name="theme-color" content="#0d1413">
+<title>Merchant Ops</title>
+<meta name="description" content="Merchant Ops staff sign in">
 <style>
   :root{
-    --bg:#f4f7f6; --surface:#ffffff; --ink:#12201e; --muted:#53655f; --line:#dbe5e1;
-    --brand:#0f766e; --brand-ink:#ffffff; --brand-soft:#d9f2ee; --warn:#b45309; --warn-soft:#fdecd2;
-    --shadow:0 1px 2px rgba(18,32,30,.06),0 8px 24px rgba(18,32,30,.07);
-  }
-  @media (prefers-color-scheme:dark){
-    :root{
-      --bg:#0c1413; --surface:#142120; --ink:#e7f1ee; --muted:#9db3ad; --line:#223432;
-      --brand:#2dd4bf; --brand-ink:#04211e; --brand-soft:#123a36; --warn:#fbbf24; --warn-soft:#3a2d10;
-      --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
-    }
+    --bg:#0d1413; --card:#1a2220; --field:#101615; --ink:#e9f1ee; --muted:#b4c0bc;
+    --line:#8a9a95; --brand:#6dcfb8; --brand-ink:#0d1413; --warn:#fbbf24;
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:960px;margin:0 auto;padding:0 16px}
-  header{padding:20px 0;display:flex;align-items:center;gap:10px}
-  .logo{width:38px;height:38px;border-radius:11px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center}
-  .logo svg{width:22px;height:22px}
-  header b{font-size:1.05rem}
-  .hero{display:grid;gap:32px;align-items:center;padding:24px 0 40px}
-  @media(min-width:800px){.hero{grid-template-columns:1.1fr .9fr;padding:48px 0 64px}}
-  .pill{display:inline-block;background:var(--brand-soft);color:var(--brand);font-weight:600;font-size:.82rem;padding:5px 12px;border-radius:99px}
-  h1{font-size:clamp(2rem,6vw,3.1rem);line-height:1.12;margin:14px 0 14px;letter-spacing:-.02em}
-  .lead{color:var(--muted);font-size:1.1rem;max-width:34em;margin:0 0 26px}
-  .cta{display:flex;flex-wrap:wrap;gap:12px}
-  .btn{display:inline-flex;align-items:center;gap:8px;min-height:50px;padding:0 24px;border-radius:14px;font-weight:650;font-size:1rem;text-decoration:none;transition:transform .15s,box-shadow .15s}
-  .btn:focus-visible{outline:3px solid var(--brand);outline-offset:3px}
-  .btn.primary{background:var(--brand);color:var(--brand-ink);box-shadow:var(--shadow)}
-  .btn.primary:hover{transform:translateY(-2px)}
-  .btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
-  .btn.ghost:hover{border-color:var(--brand)}
-  /* phone mockup */
-  .phone{justify-self:center;width:min(300px,100%);background:var(--surface);border:1px solid var(--line);border-radius:30px;padding:14px;box-shadow:var(--shadow)}
-  .phone .bar{height:6px;width:70px;background:var(--line);border-radius:9px;margin:2px auto 14px}
-  .row{display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:14px;padding:12px;margin-bottom:10px}
-  .dot{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand);flex:none}
-  .dot.w{background:var(--warn-soft);color:var(--warn)}
-  .dot svg{width:20px;height:20px}
-  .row small{display:block;color:var(--muted);font-size:.78rem}
-  .row b{font-size:.92rem}
-  .tag{margin-left:auto;font-size:.72rem;font-weight:700;color:var(--brand);background:var(--brand-soft);padding:3px 9px;border-radius:99px}
-  .tag.w{color:var(--warn);background:var(--warn-soft)}
-  /* sections */
-  h2{font-size:1.5rem;margin:0 0 6px;letter-spacing:-.01em}
-  .sub{color:var(--muted);margin:0 0 24px}
-  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
-  .card .dot{margin-bottom:12px;width:42px;height:42px}
-  .card h3{margin:0 0 4px;font-size:1.02rem}
-  .card p{margin:0;color:var(--muted);font-size:.94rem}
-  section{padding:24px 0}
-  .steps{counter-reset:s;display:grid;gap:12px}
-  .step{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
-  .step::before{counter-increment:s;content:counter(s);flex:none;width:32px;height:32px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:700}
-  .step b{display:block}
-  .step span{color:var(--muted);font-size:.94rem}
-  .band{background:var(--brand);color:var(--brand-ink);border-radius:22px;padding:32px 24px;text-align:center;margin:32px 0}
-  .band h2{margin-bottom:8px}
-  .band p{margin:0 0 18px;opacity:.9}
-  .band .btn{background:var(--brand-ink);color:var(--brand)}
-  footer{padding:24px 0 40px;color:var(--muted);font-size:.88rem;text-align:center}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;display:grid;place-items:center;padding:24px 16px}
+  main{width:100%;max-width:380px;text-align:center}
+  .logo{width:88px;height:88px;margin:0 auto 16px;border-radius:24px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-size:44px;font-weight:800;box-shadow:0 0 40px rgba(109,207,184,.25)}
+  h1{margin:0 0 6px;font-size:1.9rem;letter-spacing:-.01em}
+  .sub{margin:0 0 22px;color:var(--muted)}
+  form{background:var(--card);border:1px solid #243230;border-radius:24px;padding:18px;text-align:left}
+  label{display:block;font-weight:700;font-size:.95rem;margin:2px 0 8px}
+  input{width:100%;height:54px;padding:0 16px;margin-bottom:18px;background:var(--field);color:var(--ink);border:2px solid var(--line);border-radius:14px;font:inherit}
+  input::placeholder{color:#7d8b87}
+  input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(109,207,184,.25)}
+  button{width:100%;height:58px;border:0;border-radius:14px;background:var(--brand);color:var(--brand-ink);font:inherit;font-weight:800;font-size:1.1rem;cursor:pointer;margin-top:4px}
+  button:hover{filter:brightness(1.05)}
+  button:active{transform:translateY(1px)}
+  .request{display:block;text-align:center;margin-top:18px;color:var(--brand);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+  .msg{display:none;margin:16px 0 0;padding:10px 12px;border-radius:12px;background:#3a2d10;color:var(--warn);font-size:.9rem;text-align:left}
+  .msg.show{display:block}
+  .msg a{color:inherit;font-weight:700}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg></div>
-    <b>Merchant Operations</b>
-  </header>
+<main>
+  <div class="logo" aria-hidden="true">M</div>
+  <h1>Merchant Ops</h1>
+  <p class="sub">Sign in with your Staff ID and PIN.</p>
 
-  <main>
-    <div class="hero">
-      <div>
-        <span class="pill">For field staff</span>
-        <h1>Merchant visits, made simple.</h1>
-        <p class="lead">Plan your day, inspect businesses with a checklist, attach photos and location, and keep management informed automatically. All from your phone.</p>
-        <div class="cta">
-          <a class="btn primary" href="https://script.google.com/macros/s/AKfycbzl5Acg7vrAUt7LsTjLgZhZrO8-Kfn3wR66PJoi6wel4snX-RGfkPh12QxlrCYMy7FiPw/exec">Open the app
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          <a class="btn ghost" href="#how">How it works</a>
-        </div>
-      </div>
-      <div class="phone" aria-hidden="true">
-        <div class="bar"></div>
-        <div class="row"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><div><b>Corner Market</b><small>Inspection passed</small></div><span class="tag">PASS</span></div>
-        <div class="row"><div class="dot w"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></div><div><b>Riverside Café</b><small>Needs follow-up</small></div><span class="tag w">ALERT</span></div>
-        <div class="row"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><b>Today's route</b><small>5 visits planned</small></div></div>
-      </div>
-    </div>
+  <form id="login" autocomplete="on" novalidate>
+    <label for="staff">Staff ID</label>
+    <input id="staff" name="staff" inputmode="numeric" autocomplete="username" placeholder="Staff ID">
 
-    <section aria-labelledby="f">
-      <h2 id="f">Everything in one place</h2>
-      <p class="sub">Built for quick use on the go.</p>
-      <div class="grid">
-        <div class="card"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div><h3>Daily tasks</h3><p>See what is planned for today and tick it off as you go.</p></div>
-        <div class="card"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><h3>Inspections</h3><p>Step-by-step checklist with notes for every business.</p></div>
-        <div class="card"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div><h3>Photo and GPS proof</h3><p>Capture evidence on site, saved safely to Drive.</p></div>
-        <div class="card"><div class="dot w"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg></div><h3>Instant alerts</h3><p>Management gets a Telegram report, with alerts for failed or high-risk visits.</p></div>
-      </div>
-    </section>
+    <label for="pin">PIN</label>
+    <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="current-password" placeholder="4-8 digit PIN">
 
-    <section id="how" aria-labelledby="h">
-      <h2 id="h">How it works</h2>
-      <p class="sub">Three steps to your first inspection.</p>
-      <div class="steps">
-        <div class="step"><div><b>Sign in</b><span>Use your Staff ID and PIN from your manager.</span></div></div>
-        <div class="step"><div><b>Visit and inspect</b><span>Pick a merchant, complete the checklist, add photos and notes.</span></div></div>
-        <div class="step"><div><b>Submit</b><span>The report is saved and sent to management on Telegram.</span></div></div>
-      </div>
-    </section>
+    <button type="submit">Sign in</button>
+    <a class="request" href="#" id="request">New staff? Request access</a>
+    <p class="msg" id="msg" role="status"></p>
+  </form>
+</main>
 
-    <div class="band">
-      <h2>Ready to start?</h2>
-      <p>Tip: open the app on your phone and choose "Add to Home screen" for one-tap access.</p>
-      <a class="btn" href="https://script.google.com/macros/s/AKfycbzl5Acg7vrAUt7LsTjLgZhZrO8-Kfn3wR66PJoi6wel4snX-RGfkPh12QxlrCYMy7FiPw/exec">Open the app</a>
-    </div>
-  </main>
-
-  <footer>Merchant Operations Management</footer>
-</div>
+<script>
+  var msg = document.getElementById('msg');
+  var APP = 'https://script.google.com/macros/s/AKfycbzl5Acg7vrAUt7LsTjLgZhZrO8-Kfn3wR66PJoi6wel4snX-RGfkPh12QxlrCYMy7FiPw/exec';
+  function show(t){ msg.innerHTML = t; msg.className = 'msg show'; }
+  document.getElementById('login').addEventListener('submit', function(e){
+    e.preventDefault();
+    var id = this.staff.value.trim(), pin = this.pin.value.trim();
+    if(!id){ show('Enter your Staff ID.'); return; }
+    if(!/^\d{4,8}$/.test(pin)){ show('PIN must be 4-8 digits.'); return; }
+    show('This page is the sign-in screen only. <a href="' + APP + '">Open the live app</a> to sign in.');
+  });
+  document.getElementById('request').addEventListener('click', function(e){
+    e.preventDefault();
+    show('Ask your manager to add you, then <a href="' + APP + '">open the live app</a>.');
+  });
+</script>
 </body>
 </html>
